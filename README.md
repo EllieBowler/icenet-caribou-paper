@@ -32,7 +32,10 @@ Every autumn, Dolphin and Union caribou wait for sea ice to form before continui
 
 In this analysis we explore the potential of using AI sea ice forecasts, from the IceNet model, to predict the sea ice crossing-start times of Dolphin and Union caribou.
 
-![migration animation](./graphics/osisaf_anim_2021_autumn_complete_simplified.mp4)
+https://github.com/user-attachments/assets/d14d0bfa-b2f1-4e26-ae87-3208becc27fc
+
+*Animation of Dolphin and Union caribou migration movements in relation to OSI-SAF sea ice concentration data.*
+
 
 
 ## Installation <a name="installation"></a>
