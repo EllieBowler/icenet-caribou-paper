@@ -6,22 +6,26 @@ import matplotlib as mpl
 import geopandas as gpd
 import cartopy.crs as ccrs
 
-
 constants_path = os.path.realpath(__file__)
 SRC_PATH = os.path.dirname(constants_path)
 PROJECT_PATH = os.path.dirname(SRC_PATH)
 
-# Path to demonstration caribou data csv. Please note - this data is not publicly available, data requests should be made to the Government of Nunavut.
-PATH_TO_CSV = PROJECT_PATH + "/data/tracking_data/caribou_migration_1987_2023_clean.csv"
-# PATH_TO_CSV = PROJECT_PATH + "/data/example_migration_data_format.csv"
 
-# Paths to static data sources
-PATH_TO_OSISAF = "C:/Users/eller/PycharmProjects/icenet-caribou/data/osisaf/north/siconca"
-# PATH_TO_OSISAF = PROJECT_PATH + "/data/osisaf"
+###############################
+#### Paths to example data ####
+###############################
+
+# Path to demonstration caribou data csv. Please note - this data is not publicly available, data requests should be made to the Government of Nunavut.
+PATH_TO_CSV = PROJECT_PATH + "/data/tracking_data/example_migration_data_format.csv"
+
+# Paths to static data sources - these should be downloaded according to readme instructions
+PATH_TO_OSISAF = PROJECT_PATH + "/data/osisaf"
 PATH_TO_ICENET = PROJECT_PATH + "/data/forecasts"
-PATH_TO_AMSR2 = "C:/Users/eller/PycharmProjects/icenet-caribou/data/amsr2"
-# PATH_TO_AMSR2 = PROJECT_PATH + "/data/amsr2"
+PATH_TO_AMSR2 = PROJECT_PATH + "/data/amsr2"
 PATH_TO_OSM = PROJECT_PATH + "/data/osm/land-polygons-split-4326/land_polygons.shp"
+
+# Path to post-processed VI-buffer and gulf area for plotting
+ADJUSTED_VI_POLY = PROJECT_PATH + "/data/polygons/final_vi_buffer.shp"
 
 # Paths to land and coast masks
 LAND_MASK_PATH = PROJECT_PATH + "/data/masks/land_mask.npy"
@@ -29,16 +33,19 @@ OSISAF_COAST_CELLS = PROJECT_PATH + "/data/masks/osisaf_coastal_gridcells.nc"
 AMSR_COAST_CELLS = PROJECT_PATH + "/data/masks/amsr_coastal_gridcells.nc"
 
 # Paths to results files to make plots for paper
-# These can be downloaded from the PDC DOI: 
 MAE_COMPARE_ARCTIC = PROJECT_PATH + "/data/results/seas_compare/whole_arctic_bias_correct.csv"
 MAE_COMPARE_GULF = PROJECT_PATH + "/data/results/seas_compare/coronation_gulf_bias_correct.csv"
 
 PERCENT_MIG_MAPPING = {"osisaf": PROJECT_PATH + "/data/results/percent_migrate/osisaf_nconsec_1_smooth_40_mapping.csv", 
                        "amsr": PROJECT_PATH + "/data/results/percent_migrate/amsr_nconsec_1_smooth_50_mapping.csv"}
 
-PROCESSED_SIC_DATA_FILES = {"osisaf": f"{PROJECT_PATH}/data/results/sic_observations/osisaf_sic_data2.csv",
+PROCESSED_SIC_DATA_FILES = {"osisaf": f"{PROJECT_PATH}/data/results/sic_observations/osisaf_sic_data.csv",
                             "amsr": f"{PROJECT_PATH}/data/results/sic_observations/amsr_sic_data.csv"}
 
+
+############################################
+#### Paths defined for main src scripts ####
+############################################
 
 PATH_TO_MIG_START_DF = PROJECT_PATH + "/data/migration_start/final_vi_buffer_mig_start.geojson"
 
@@ -50,14 +57,8 @@ GULF_AOI_PATH = PROJECT_PATH + "/data/polygons/coronation_gulf_aoi.geojson"
 ADJUSTED_VI_POLY = PROJECT_PATH + "/data/polygons/final_vi_buffer.geojson"
 GULF_COASTLINE_PATH = PROJECT_PATH + "/data/polygons/coronation_gulf_land_poly.geojson"
 
-
-# # Paths to post-processed crossing grid cell masks (made using migration-start points)
-# OSISAF_CROSSING_CELLS = PROJECT_PATH + "/data/masks/osisaf_crossing_gridcells.nc"
-# AMSR_CROSSING_CELLS = PROJECT_PATH + "/data/masks/amsr_crossing_gridcells.nc"
-
 # path to migration start date csv
 PATH_TO_MIG_START_CSV = PROJECT_PATH + "/processed/migration_start/final_vi_buffer_full_mig_start_clean.csv"
-# PATH_TO_PERCENT_MIG_CSV = PROJECT_PATH + "/processed/percent_migrate_nconsec5_window1.csv"
 
 PERCENT_MIG_FILES = {"osisaf": PROJECT_PATH + "/processed/osisaf_nconsec_1_smooth_40_mapping.csv",
                      "amsr": PROJECT_PATH + "/processed/amsr_nconsec_1_smooth_50_mapping.csv"}
@@ -71,7 +72,6 @@ SEASON_LIST = ["spring", "autumn"]
 # buffer/simplify parameters for VI land polygon
 BUFFER_DIST = 5000
 SIMP_DIST = 100
-# ADJUSTED_VI_POLY = PROJECT_PATH + "/data/polygons/victoria_island_plus5km_edinburgh_island_poly2.geojson"
 
 # pre set paths to data save folders
 PATH_TO_POLYGONS = PROJECT_PATH + "/data/polygons"
@@ -88,16 +88,15 @@ SIC_DATA_FILES = {"osisaf": f"{PROCESSED_DATA_FOLDER}/sic_observations/osisaf_si
 SIC_COL_REF = {"osisaf": "ice_conc", "amsr": "z",
                "icenet_1w": "sic_mean", "icenet_2w": "sic_mean", "icenet_3w": "sic_mean"}
 
+
 ###############################
 ### BOUNDS OF PLOTTING DATA ###
 ###############################
 
 central_lat = 68
-central_lon = -110   ### change from -111
-# lat_span = 3  # degrees
-# lon_span = 12  # degrees
+central_lon = -110   
 lat_span = 5  # degrees
-lon_span = 16  # degrees ### change from 14
+lon_span = 16  # degrees
 
 # Determine crop corners
 lon_left = central_lon - lon_span / 2
@@ -121,12 +120,9 @@ amsr_x, amsr_y = amsr_transformer.transform(lats, lons)
 PROJECTION = ccrs.LambertAzimuthalEqualArea(central_lon, 90)
 PLOT_EXTENT = [lon_left+1, lon_right-1, lat_lower+1, lat_upper-1]
 
-# c_map = mpl.cm.get_cmap("jet").copy()
 c_map = mpl.cm.get_cmap("viridis").copy()
-# c_map = mpl.cm.get_cmap("Blues_r").copy()
 bg_map = cimgt.Stamen('terrain-background')
 bg_map = None
-# land_gdf = gpd.read_file(PROJECT_PATH + "/data/coronation_gulf_land_poly.geojson")
 land_gdf = gpd.read_file(GULF_COASTLINE_PATH)
 fill_land = True
 caribou_colour = "red"
@@ -137,7 +133,6 @@ osisaf_plot_config = {
     "bg_map": bg_map,
     "coastline": land_gdf,
     "fill_land": fill_land,
-    # "plot_extent": [lon_left, lon_right, lat_lower, lat_upper],
     "crop_x": [np.min(osisaf_x), np.max(osisaf_x)],
     "crop_y": [np.max(osisaf_y), np.min(osisaf_y)],
     "central_lon": central_lon,
@@ -154,7 +149,6 @@ icenet_plot_config = {
     "bg_map": bg_map,
     "coastline": land_gdf,
     "fill_land": fill_land,
-    # "plot_extent": [lon_left, lon_right, lat_lower, lat_upper],
     "crop_x": [np.min(osisaf_x), np.max(osisaf_x)],
     "crop_y": [np.max(osisaf_y), np.min(osisaf_y)],
     "central_lon": central_lon,
@@ -170,7 +164,6 @@ amsr_plot_config = {
     "bg_map": bg_map,
     "coastline": land_gdf,
     "fill_land": fill_land,
-    # "plot_extent": [lon_left, lon_right, lat_lower, lat_upper],
     "crop_x": [np.min(amsr_x), np.max(amsr_x)],
     "crop_y": [np.min(amsr_y), np.max(amsr_y)],
     "central_lon": central_lon,
@@ -180,4 +173,3 @@ amsr_plot_config = {
     "vmax": 100,
     "transform": amsr_crs,
 }
-
