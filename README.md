@@ -5,7 +5,7 @@ Our analysis also made use of the [IceNet python library](https://github.com/ice
 
 **Please note:** The caribou satellite telemetry data used in the study is held by the Government of Nunavut and is not publicly available. We have therefore removed outputs from the codebase which reveal specifics relating to that data. Functions and scripts are still provided, as well as an example of data structure so they could be adapted for other similar datasets. 
 
-While the original telemetry dataset is not provided, result summary files, as well as the IceNet forecasts and model weights used for this study, are available for download from the [Polar Data Centre](link). These result files can be used to reproduce the plots from the paper using the notebook [make_paper_plots.ipynb](make_paper_plots.ipynb). For any questions please contact eller@bas.ac.uk.
+While the original telemetry dataset is not provided, result summary files, as well as the IceNet forecasts and model weights used for this study, are available for download from the [Polar Data Centre](https://doi.org/10.5285/8738b3cb-52c7-4b36-aa6d-6e15c0b46ba4). These result files can be used to reproduce the plots from the paper using the notebook [make_paper_plots.ipynb](make_paper_plots.ipynb). For any questions please contact eller@bas.ac.uk.
 
 
 ### Table of contents
@@ -63,7 +63,7 @@ In `data` folder, download:
 
 ## Outline of functions and scripts <a name="outline"></a>
 
-#### The notebook [make_paper_plots.ipynb](make_paper_plots.ipynb) can be run using summary result files and IceNet forecasts available from the [PDC](link), without the need for the full caribou telemetry dataset. 
+#### The notebook [make_paper_plots.ipynb](make_paper_plots.ipynb) can be run using summary result files and IceNet forecasts available from the [PDC](https://doi.org/10.5285/8738b3cb-52c7-4b36-aa6d-6e15c0b46ba4), without the need for the full caribou telemetry dataset. 
 
 #### A summary of functions and scripts for the full analysis are provided below. We note that some have been adapted to remove specifics relating to the migration dataset:
 
